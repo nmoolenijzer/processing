@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script src="js/p5.js"></script>
+<script src="js/p5.sound.js"></script>
+<div style="margin:-10px; overflow-x:hidden;" id="color-pal"></div>
+<script>
+var r = 256;
+var g = 0;
+var b = 0;
+var oldX = 0;
+var oldY = 0;
+var currRad = 0;
+var currFill = 0;
+var currWidth = 0;
+var addedCircles = [];
+ 
+var arr = [];
+var beat = 0;
+
+function preload() {
+        song = loadSound('assets/Formation.mp3');
+ 
+}
+ 
+function setup() {
+        frameRate(1000);
+        song.setVolume(0.1);
+        song.play();
+        arr = song.getPeaks(200);
+        createCanvas($(window).width()-10, $(window).height());
+}
+ 
+function draw() {
+        line(50+i*0.5, $(window).height()-450 + arr[i]*100, 50+(i+1)*0.5, 50 + arr[i + 1]*100);
+        beat++;
+        //background(0);
+        smooth();
+        //if (oldX != mouseX || oldY != mouseY) {
+                if (r == 256 && g <= 255 && b == 0) g++;
+                if (r > 0 && g == 256 && b == 0) r--;
+                if (r == 0 && g == 256 && b <= 255) b++;
+                if (r == 0 && g > 0 && b == 256) g--;
+                if (r <= 255 && g == 0 && b == 256) r++;
+                if (r == 256 && g == 0 && b > 0) b--;
+                fill(r, g, b);
+                stroke(r, g, b);
+                //ellipse($(window).width()/2, $(window).height()/2, 300, 300);
+                fill(0);
+                stroke(0);
+                //ellipse($(window).width()/2, $(window).height()/2 - 50, 300, 300);
+                //fill(r, g, b);
+                //stroke(r, g, b);
+                rect(0, $(window).height()-500, $(window).width(), 100);
+                fill(r, g, b);
+                stroke(r, g, b);
+                //rect(0, 0, $(window).width(), $(window).height());
+        //}
+        addedCircles.push([Math.floor(Math.random()*$(window).width() + 1), 0, Math.floor(Math.random()*10 + 1)]);
+        if (mouseIsPressed) {
+                //fill(0);
+                //stroke(0);
+                ellipse(mouseX, mouseY, currRad, currRad);
+                //fill(r, g, b);
+                //stroke(r, g, b);
+                currRad++;
+        }
+        for (var i = 0; i < addedCircles.length; i++) {
+                //if (addedCircles[i][0] < $(window).width()/2 - 150 || addedCircles[i][0] > $(window).width()/2 + 150 || addedCircles[i][1] < $(window).height()/2 + 100) {
+                ellipse(addedCircles[i][0], addedCircles[i][1]++, addedCircles[i][2], addedCircles[i][2]);
+                if (addedCircles[i][1] > $(window).height()) {
+                        addedCircles.splice(i, 1);
+                        i--;
+                }
+                //}
+                //else {
+                        //ellipse($(window).width()/2, $(window).height()/2 + 150 - (currFill * 0.5), currFill, currFill);
+                        //rect($(window).width()/2 - (currWidth * 0.5), $(window).height()/2 + 100 - (currFill * 0.1), currWidth, currFill * 0.1);
+                        //if (currWidth < 300) { currWidth += 0.01; }
+                        //if (currFill < 300) currFill += 0.05;
+                //}
+        }
+        oldX = mouseX;
+        oldY = mouseY;
+}
+ 
+function mouseReleased() {
+        //addedCircles.push([oldX, oldY, currRad]);
+        currRad = 0;
+}
+</script>
