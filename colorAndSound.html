@@ -3,9 +3,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script src="js/p5.js"></script>
 <script src="js/p5.sound.js"></script>
-<div style="margin:-10px; overflow-x:hidden;" id="color-pal"></div>
+<link href='style.css' rel='stylesheet' type='text/css'>
+<div id="top-bar" class="top-bar">
+        <input id="button" type="button" class="button" value="Home" onclick="location.href='index.html'"><input id="button" type="button" class="button" value="Color" onclick="location.href='color.html'"><input type="button" class="button" value="Sound & Color" onclick="location.href='soundAndColor.html'"><input id="button" type="button" class="button" value="About Me" onclick="location.href='about.html'"><input id="button" type="button" class="button" value="Contact" onclick="location.href='contact.html'">
+</div>
 <script>
-var r = 256;
+var r = 255;
 var g = 0;
 var b = 0;
 var oldX = 0;
@@ -21,64 +24,68 @@ var beat = 0;
 
 function preload() {
         song = loadSound('assets/Formation.mp3');
- 
 }
  
 function setup() {
+        frameRate(60);
         song.setVolume(0.1);
         song.play();
         arr = song.getPeaks(60 * song.duration());
         createCanvas($(window).width()-10, $(window).height());
 }
- 
+
 function draw() {
         smooth();
-        if (r == 256 && g <= 255 && b == 0) g++;
-        if (r > 0 && g == 256 && b == 0) r--;
-        if (r == 0 && g == 256 && b <= 255) b++;
-        if (r == 0 && g > 0 && b == 256) g--;
-        if (r <= 255 && g == 0 && b == 256) r++;
-        if (r == 256 && g == 0 && b > 0) b--;
+
+        if (r == 255 && g <= 254 && b == 0) g++;
+        if (r > 0 && g == 255 && b == 0) r--;
+        if (r == 0 && g == 255 && b <= 254) b++;
+        if (r == 0 && g > 0 && b == 255) g--;
+        if (r <= 254 && g == 0 && b == 255) r++;
+        if (r == 255 && g == 0 && b > 0) b--;
+
+        var buttons = document.getElementsByClassName("button");
+        for (var k = 0; k < buttons.length; k++) {
+                buttons[k].style.backgroundColor = "#" + toHex(r) + toHex(g) + toHex(b);
+        }
+        document.getElementById("top-bar").style.backgroundColor = "#" + toHex(r) + toHex(g) + toHex(b);
+
         fill(0);
         stroke(0);
-        rect(0, $(window).height()-500, $(window).width(), 100);
+        rect(0, $(window).height()-500, $(window).width(), 200);
         fill(r, g, b);
         stroke(r, g, b);
         var xDiff = 0.1;
         var yDiff = 100;
         addedBeat.push([beat*xDiff, $(window).height()-300 + arr[beat]*yDiff, (beat+1)*xDiff, $(window).height()-300 + arr[beat + 1]*yDiff]);
         beat++;
-        
         addedCircles.push([Math.floor(Math.random()*$(window).width() + 1), 0, Math.floor(Math.random()*10 + 1)]);
-        if (mouseIsPressed) {
-                //fill(0);
-                //stroke(0);
-                ellipse(mouseX, mouseY, currRad, currRad);
-                //fill(r, g, b);
-                //stroke(r, g, b);
-                currRad++;
-        }
         for (var i = 0; i < addedCircles.length; i++) {
-                ellipse(addedCircles[i][0], addedCircles[i][1]++, addedCircles[i][2]*arr[beat], addedCircles[i][2]*arr[beat]);
+                var baseRad = 2;
+                if (arr[beat]>0.25) ellipse(addedCircles[i][0], addedCircles[i][1]++, baseRad+addedCircles[i][2]*(0.8+arr[beat]), baseRad+addedCircles[i][2]*(0.8+arr[beat]));
+                else ellipse(addedCircles[i][0], addedCircles[i][1]++, addedCircles[i][2], addedCircles[i][2]);
                 if (addedCircles[i][1] > $(window).height()) {
                         addedCircles.splice(i, 1);
                         i--;
                 }
         }
-        fill(0);
-        stroke(0);
-        rect(0, $(window).height()-400, $(window).width(), 200);
-        fill(r, g, b);
-        stroke(r, g, b);
-        for (var i = 0; i < addedBeat.length; i++) {
-                line(addedBeat[i][0], addedBeat[i][1], addedBeat[i][2], addedBeat[i][3]);
-        }
-        oldX = mouseX;
-        oldY = mouseY;
+        // fill(0);
+        // stroke(0);
+        // rect(0, $(window).height()-400, $(window).width(), 200);
+        // fill(r, g, b);
+        // stroke(r, g, b);
+        // for (var i = 0; i < addedBeat.length; i++) {
+        //         line(addedBeat[i][0], addedBeat[i][1], addedBeat[i][2], addedBeat[i][3]);
+        // }
 }
  
 function mouseReleased() {
         //addedCircles.push([oldX, oldY, currRad]);
         currRad = 0;
+}
+
+function toHex(v) {
+        var hex = v.toString(16);
+        return hex.length == 1 ? "0" + hex : hex;
 }
 </script>
