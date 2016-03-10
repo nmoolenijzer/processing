@@ -3,6 +3,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script src="js/p5.js"></script>
 <div style="margin:-10px; overflow-x:hidden;" id="color-pal"></div>
+<link href='style.css' rel='stylesheet' type='text/css'>
+<div id="top-bar" class="top-bar">
+        <input id="button" type="button" class="button" value="Home" onclick="location.href='/index.html'"><input id="button" type="button" class="selected" value="Color" onclick=""><input type="button" class="button" value="Sound & Color" onclick="location.href='colorAndSound.html'"><input id="button" type="button" class="button" value="About Me" onclick="location.href='about.html'"><input id="button" type="button" class="button" value="Contact" onclick="location.href='contact.html'">
+</div>
 <script>
 var r = 256;
 var g = 0;
@@ -28,6 +32,11 @@ function draw() {
                 if (r == 0 && g > 0 && b == 256) g--;
                 if (r <= 255 && g == 0 && b == 256) r++;
                 if (r == 256 && g == 0 && b > 0) b--;
+                var buttons = document.getElementsByClassName("button");
+                for (var k = 0; k < buttons.length; k++) {
+                        buttons[k].style.backgroundColor = "#" + toHex(r) + toHex(g) + toHex(b);
+                }
+                document.getElementById("top-bar").style.backgroundColor = "#" + toHex(r) + toHex(g) + toHex(b);
                 fill(r, g, b);
                 stroke(r, g, b);
                 //ellipse($(window).width()/2, $(window).height()/2, 300, 300);
@@ -72,5 +81,10 @@ function draw() {
 function mouseReleased() {
         //addedCircles.push([oldX, oldY, currRad]);
         currRad = 0;
+}
+
+function toHex(v) {
+        var hex = v.toString(16);
+        return hex.length == 1 ? "0" + hex : hex;
 }
 </script>

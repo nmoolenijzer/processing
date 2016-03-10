@@ -5,7 +5,7 @@
 <script src="js/p5.sound.js"></script>
 <link href='style.css' rel='stylesheet' type='text/css'>
 <div id="top-bar" class="top-bar">
-        <input id="button" type="button" class="button" value="Home" onclick="location.href='index.html'"><input id="button" type="button" class="button" value="Color" onclick="location.href='color.html'"><input type="button" class="button" value="Sound & Color" onclick="location.href='soundAndColor.html'"><input id="button" type="button" class="button" value="About Me" onclick="location.href='about.html'"><input id="button" type="button" class="button" value="Contact" onclick="location.href='contact.html'">
+        <input id="button" type="button" class="button" value="Home" onclick="location.href='/index.html'"><input id="button" type="button" class="button" value="Color" onclick="location.href='color.html'"><input type="button" class="selected" value="Sound & Color" onclick="'"><input id="button" type="button" class="button" value="About Me" onclick="location.href='about.html'"><input id="button" type="button" class="button" value="Contact" onclick="location.href='contact.html'">
 </div>
 <script>
 var r = 255;
@@ -31,7 +31,8 @@ function setup() {
         song.setVolume(0.1);
         song.play();
         arr = song.getPeaks(60 * song.duration());
-        createCanvas($(window).width()-10, $(window).height());
+        // createCanvas($(window).width()-10, $(window).height());
+        createCanvas($(window).width() + 10, 800);
 }
 
 function draw() {
@@ -49,10 +50,10 @@ function draw() {
                 buttons[k].style.backgroundColor = "#" + toHex(r) + toHex(g) + toHex(b);
         }
         document.getElementById("top-bar").style.backgroundColor = "#" + toHex(r) + toHex(g) + toHex(b);
-
+                
         fill(0);
         stroke(0);
-        rect(0, $(window).height()-500, $(window).width(), 200);
+        rect(0, $(window).height()-500, $(window).width() + 10, 200);
         fill(r, g, b);
         stroke(r, g, b);
         var xDiff = 0.1;
@@ -64,7 +65,7 @@ function draw() {
                 var baseRad = 2;
                 if (arr[beat]>0.25) ellipse(addedCircles[i][0], addedCircles[i][1]++, baseRad+addedCircles[i][2]*(0.8+arr[beat]), baseRad+addedCircles[i][2]*(0.8+arr[beat]));
                 else ellipse(addedCircles[i][0], addedCircles[i][1]++, addedCircles[i][2], addedCircles[i][2]);
-                if (addedCircles[i][1] > $(window).height()) {
+                if (addedCircles[i][1] > 800) {
                         addedCircles.splice(i, 1);
                         i--;
                 }
@@ -77,11 +78,6 @@ function draw() {
         // for (var i = 0; i < addedBeat.length; i++) {
         //         line(addedBeat[i][0], addedBeat[i][1], addedBeat[i][2], addedBeat[i][3]);
         // }
-}
- 
-function mouseReleased() {
-        //addedCircles.push([oldX, oldY, currRad]);
-        currRad = 0;
 }
 
 function toHex(v) {

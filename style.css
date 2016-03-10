@@ -3,6 +3,15 @@ body {
 	height: 100%;
 }
 
+canvas {
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+	padding-right: 0;
+	padding-left: 0;
+	margin-left: -10px;
+}
+
 .text {
 	padding-left: 10%;
 	padding-right: 10%;
@@ -23,6 +32,9 @@ body {
 }
 
 .top-bar {
+	margin-top: -10px;
+	margin-right: -10px;
+	margin-left: -10px;
 	text-align: center;
 	border-bottom: thin solid #ffffff;
 }
@@ -45,9 +57,15 @@ body {
 }
 
 .selected {
+	display: inline-block;
+	height: 50px;
+	width: 250px;
+	font-size: 20px;
+	font-family: 'Quicksand', 'Segoe UI', Calibri, Candara, Arial, sans-serif;
+	border: none;
 	background-color: #ffffff;
 	font-weight: bold;
-	color: #7f1914;
+	color: #000000;
 	cursor: auto;
 }
 
